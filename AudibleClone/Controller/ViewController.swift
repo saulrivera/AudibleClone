@@ -32,13 +32,45 @@ class ViewController: UIViewController {
         Page(title: "Send from your library", message: "Tap the More moenu next to any book. Choose \"Send this book\"", imageName: "page2"),
         Page(title: "Send from the player", message: "Tap the More menu in the upper corner. Choose \"Send this Book\"", imageName: "page3")
     ]
+    
+    let pageController: UIPageControl = {
+        let pc = UIPageControl()
+        pc.pageIndicatorTintColor = .lightGray
+        pc.currentPageIndicatorTintColor = UIColor(red: 247/255, green: 154/255, blue: 27/255, alpha: 1)
+        pc.numberOfPages = 3
+        return pc
+    }()
+    
+    let skipButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Skip", for: .normal)
+        btn.setTitleColor(UIColor(red: 247/255, green: 154/255, blue: 27/255, alpha: 1), for: .normal)
+        return btn
+    }()
+    
+    let nextButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Next", for: .normal)
+        btn.setTitleColor(UIColor(red: 247/255, green: 154/255, blue: 27/255, alpha: 1), for: .normal)
+        return btn
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(collectionView)
+        view.addSubview(pageController)
+        view.addSubview(skipButton)
+        view.addSubview(nextButton)
+        
+        pageController.anchor(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 16, rightConstant: 0, widthConstant: 0, heightConstant: 30)
+        
         collectionView.anchorToTop(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         collectionView.register(PageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        skipButton.anchor(view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, topConstant: 32, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 80, heightConstant: 50)
+        
+        nextButton.anchor(view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, topConstant: 32, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 80, heightConstant: 50)
     }
 }
 
