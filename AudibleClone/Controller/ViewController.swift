@@ -63,6 +63,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        observeKeyboardNotifications()
+        
         view.addSubview(collectionView)
         view.addSubview(pageController)
         view.addSubview(skipButton)
@@ -81,7 +83,27 @@ class ViewController: UIViewController {
     
     private func registerCells() {
         collectionView.register(PageCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: loginCellId)
+        collectionView.register(LoginCell.self, forCellWithReuseIdentifier: loginCellId)
+    }
+    
+    private func observeKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardShow(notification: NSNotification) {
+        let keyboardInfo = notification.userInfo!
+        if let keyboardFrameBegin = keyboardInfo["UIKeyboardFrameBeginUserInfoKey"] as? CGRect {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.view.frame = CGRect(x: 0, y: -keyboardFrameBegin.height/3, width: self.view.frame.width, height: self.view.frame.height)
+            }, completion: nil)
+        }
+    }
+    
+    @objc func keyboardHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+           self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+       }, completion: nil)
     }
 }
 
@@ -122,5 +144,9 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 }
