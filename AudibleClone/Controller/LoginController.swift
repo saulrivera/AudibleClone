@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LoginController.swift
 //  AudibleClone
 //
 //  Created by Saul Rivera on 06/06/20.
@@ -189,6 +189,8 @@ extension LoginController: UICollectionViewDataSource, UICollectionViewDelegate,
 
 extension LoginController: LoginCellProtocol {
     func finishLoggingIn() {
+        UserDefaults.standard.setIsLoggedIn(value: true)
+        
         dismiss(animated: true)
     }
 }

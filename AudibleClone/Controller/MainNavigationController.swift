@@ -26,6 +26,6 @@ class MainNavigationController: UINavigationController {
     }
     
     private var isLoggedIn: Bool {
-        return false
+        return UserDefaults.standard.isLoggedIn()
     }
 }

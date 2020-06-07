@@ -18,6 +18,7 @@
 		B23F1AAF248D735E0049F03C /* LoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F1AAE248D735E0049F03C /* LoginCell.swift */; };
 		B23F1AB1248D91B60049F03C /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F1AB0248D91B60049F03C /* MainNavigationController.swift */; };
 		B23F1AB3248D98120049F03C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F1AB2248D98120049F03C /* HomeController.swift */; };
+		B23F1AB5248DA4860049F03C /* UserDefaults+helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23F1AB4248DA4860049F03C /* UserDefaults+helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		B23F1AAE248D735E0049F03C /* LoginCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCell.swift; sourceTree = "<group>"; };
 		B23F1AB0248D91B60049F03C /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		B23F1AB2248D98120049F03C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		B23F1AB4248DA4860049F03C /* UserDefaults+helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				B23F1AAA248CB2730049F03C /* UIViewUtils.swift */,
+				B23F1AB4248DA4860049F03C /* UserDefaults+helpers.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 			files = (
 				B23F1AAB248CB2730049F03C /* UIViewUtils.swift in Sources */,
 				B23F1A95248CA5C80049F03C /* LoginController.swift in Sources */,
+				B23F1AB5248DA4860049F03C /* UserDefaults+helpers.swift in Sources */,
 				B23F1AB1248D91B60049F03C /* MainNavigationController.swift in Sources */,
 				B23F1AAF248D735E0049F03C /* LoginCell.swift in Sources */,
 				B23F1AAD248CB2860049F03C /* Page.swift in Sources */,
