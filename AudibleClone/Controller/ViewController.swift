@@ -9,7 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout();
         layout.scrollDirection = .horizontal
@@ -21,7 +20,7 @@ class ViewController: UIViewController {
         
         cv.dataSource = self
         cv.delegate = self
-
+        
         return cv
     }()
     
@@ -42,24 +41,26 @@ class ViewController: UIViewController {
         return pc
     }()
     
-    let skipButton: UIButton = {
+    lazy var skipButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Skip", for: .normal)
         btn.setTitleColor(UIColor(red: 247/255, green: 154/255, blue: 27/255, alpha: 1), for: .normal)
+        btn.addTarget(self, action: #selector(skipPage), for: .touchUpInside)
         return btn
     }()
     
-    let nextButton: UIButton = {
+    lazy var nextButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Next", for: .normal)
         btn.setTitleColor(UIColor(red: 247/255, green: 154/255, blue: 27/255, alpha: 1), for: .normal)
+        btn.addTarget(self, action: #selector(self.nextPage), for: .touchUpInside)
         return btn
     }()
     
     var pageControllerBtnAnchor: NSLayoutConstraint?
     var skipButtonTopAnchor: NSLayoutConstraint?
     var nextButtonTopAnchor: NSLayoutConstraint?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -102,8 +103,54 @@ class ViewController: UIViewController {
     
     @objc func keyboardHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-           self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-       }, completion: nil)
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        }, completion: nil)
+    }
+    
+    
+    @objc private func nextPage() {
+        if pageController.currentPage == pages.count {
+            return
+        }
+        next()
+    }
+    
+    @objc private func skipPage() {
+        pageController.currentPage = pages.count - 1
+        next()
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let page = Int(targetContentOffset.pointee.x / view.frame.width)
+        pageController.currentPage = page
+        
+        moveConstraint(to: page)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
+    private func next() {
+        let indexPath = IndexPath(item: pageController.currentPage + 1, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        pageController.currentPage += 1
+        moveConstraint(to: pageController.currentPage)
+    }
+    
+    private func moveConstraint(to page: Int) {
+        if page == pages.count {
+            pageControllerBtnAnchor?.constant = 40
+            skipButtonTopAnchor?.constant = -40
+            nextButtonTopAnchor?.constant = -40
+        } else {
+            pageControllerBtnAnchor?.constant = -16
+            skipButtonTopAnchor?.constant = 32
+            nextButtonTopAnchor?.constant = 32
+        }
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -120,33 +167,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PageCell
         cell.page = pages[indexPath.row]
-                        
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let page = Int(targetContentOffset.pointee.x / view.frame.width)
-        pageController.currentPage = page
-        
-        if page == pages.count {
-            pageControllerBtnAnchor?.constant = 40
-            skipButtonTopAnchor?.constant = -40
-            nextButtonTopAnchor?.constant = -40
-        } else {
-            pageControllerBtnAnchor?.constant = -16
-            skipButtonTopAnchor?.constant = 32
-            nextButtonTopAnchor?.constant = 32
-        }
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        view.endEditing(true)
     }
 }
