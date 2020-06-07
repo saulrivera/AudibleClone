@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         view.addSubview(skipButton)
         view.addSubview(nextButton)
         
-        pageControllerBtnAnchor = pageController.anchor(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 16, rightConstant: 0, widthConstant: 0, heightConstant: 30)[1]
+        pageControllerBtnAnchor = pageController.anchor(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 30)[1]
         
         collectionView.anchorToTop(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         
@@ -144,13 +144,23 @@ class ViewController: UIViewController {
             skipButtonTopAnchor?.constant = -40
             nextButtonTopAnchor?.constant = -40
         } else {
-            pageControllerBtnAnchor?.constant = -16
+            pageControllerBtnAnchor?.constant = 0
             skipButtonTopAnchor?.constant = 32
             nextButtonTopAnchor?.constant = 32
         }
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
+        
+        let indexPath = IndexPath(item: pageController.currentPage, section: 0)
+        DispatchQueue.main.async {
+            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            self.collectionView.reloadData()
+        }
     }
 }
 
